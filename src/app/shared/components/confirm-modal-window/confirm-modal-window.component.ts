@@ -1,0 +1,26 @@
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+
+@Component({
+  selector: 'app-confirm-modal-window',
+  templateUrl: './confirm-modal-window.component.html',
+  styleUrls: ['./confirm-modal-window.component.css']
+})
+export class ConfirmModalWindowComponent implements OnInit {
+
+  @Input() title: string | undefined;
+  @Input() message: string | undefined;
+  @Input() okButtonText: string | undefined;
+  @Input() cancelButtonText: string | undefined;
+
+  modalResultState: boolean = false;
+  @Output() modalResult = new EventEmitter<boolean>()
+
+  constructor() { }
+
+  ngOnInit(): void {}
+
+  sendModalResultState(){
+    this.modalResult.emit(this.modalResultState);
+  }
+
+}
