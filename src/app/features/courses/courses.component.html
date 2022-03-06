@@ -1,8 +1,9 @@
-<app-header>
+<!-- <app-header>
     <span>Weronika</span>
     <app-button description="Logout"></app-button>
-</app-header>
+</app-header> -->
 
+<app-search placeholder="Search smth" (searchWordEvent)="reciveSearchWordMessage($event)"></app-search>
 
 <app-button *ngIf="!showConfirmModalWindow" description="Show Modal Window" (click)="showModalWindow()"></app-button>
 

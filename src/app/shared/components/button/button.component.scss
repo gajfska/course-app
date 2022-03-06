@@ -1,0 +1,26 @@
+@import "../../../../styles.scss";
+
+.customButton {
+    border: solid $purple 2px;
+    border-radius: 0px;
+    font-size: 16px;
+    background: $white;
+    padding: 10px 20px 10px 20px;
+    margin: 10px 20px;
+}
+
+.customButton:hover {
+    background: $purple;
+    text-decoration: none;
+}
+
+.customButton:focus {
+    background: $light_blue;
+    text-decoration: none;
+}
+
+.customButton:active {
+    background: $light_blue;
+    text-decoration: none;
+}
+

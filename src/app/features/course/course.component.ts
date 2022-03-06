@@ -4,7 +4,7 @@ import { Course } from './course.model';
 @Component({
   selector: 'app-course',
   templateUrl: './course.component.html',
-  styleUrls: ['./course.component.css']
+  styleUrls: ['./course.component.scss']
 })
 export class CourseComponent implements OnInit {
 
@@ -13,7 +13,7 @@ export class CourseComponent implements OnInit {
     title: '',
     description: '',
     id: 0,
-    creationDate: 0,
+    creationDate: new Date(),
     duration: 0,
     authors: []
   };
@@ -22,12 +22,12 @@ export class CourseComponent implements OnInit {
 
   ngOnInit(): void { }
 
-  minutesToTime(duration: number): string {
-    const hours = Math.floor(duration / 60);
-    const minutes = duration % 60;
-    const hoursRightFormat = hours < 10 ? '0' + hours : hours;
-    const minutesRightFormat = minutes < 10 ? '0' + minutes : minutes;
-    return `${hoursRightFormat}:${minutesRightFormat}`
-  }
+  // minutesToTime(duration: number): string {
+  //   const hours = Math.floor(duration / 60);
+  //   const minutes = duration % 60;
+  //   const hoursRightFormat = hours < 10 ? '0' + hours : hours;
+  //   const minutesRightFormat = minutes < 10 ? '0' + minutes : minutes;
+  //   return `${hoursRightFormat}:${minutesRightFormat}`
+  // }
 
 }

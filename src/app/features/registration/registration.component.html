@@ -1,1 +1,50 @@
-<p>registration works!</p>
+<div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
+    <h3>Registration</h3>
+    <form [formGroup]="registrationForm" #ngForm="ngForm" (ngSubmit)="onSubmit()">
+
+        <div class="d-flex flex-column form-group">
+            <label for="name"><b>Name</b></label>
+            <input 
+                type="text" 
+                class="form-control input-basic-style" 
+                formControlName="name" 
+                [ngClass]="name?.invalid && (ngForm.submitted || name?.touched) ? 'input-error-style' : 'input-basic-style'"
+                id="name" required>
+
+            <small class="text-danger" *ngIf="name?.invalid && (ngForm.submitted || name?.touched)">
+                Name is required
+            </small>
+        </div>
+
+        <div class="d-flex flex-column form-group">
+            <label for="email"><b>Email</b></label>
+            <input 
+                type="text" 
+                class="form-control input-basic-style"
+                [ngClass]="email?.errors?.['required'] && (ngForm.submitted || email?.touched) ? 'input-error-style' : 'input-basic-style'"
+                formControlName="email" required>
+
+            <small class="text-danger" *ngIf="email?.errors?.['required'] && (ngForm.submitted || email?.touched)">
+                Email is required
+            </small>
+        </div>
+
+        <div class="d-flex flex-column form-group">
+            <label for="password"><b>Password</b></label>
+            <input 
+                type="password" 
+                class="form-control input-basic-style" 
+                [ngClass]="password?.errors?.['required'] && (ngForm.submitted || password?.touched) ? 'input-error-style' : 'input-basic-style'"
+                formControlName="password" required>
+
+            <small class="text-danger" *ngIf="password?.invalid && (ngForm.submitted || password?.touched)">
+                Password is required
+            </small>
+        </div>
+        <div class="text-center">
+            <app-button type="submit" description="Registration"></app-button>
+        </div>
+    </form>
+    <p>If you have an account you can</p>
+    <p>Login</p>
+</div>

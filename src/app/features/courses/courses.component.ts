@@ -4,7 +4,7 @@ import { Course } from '../course/course.model';
 @Component({
   selector: 'app-courses',
   templateUrl: './courses.component.html',
-  styleUrls: ['./courses.component.css']
+  styleUrls: ['./courses.component.scss']
 })
 export class CoursesComponent implements OnInit {
 
@@ -26,6 +26,10 @@ export class CoursesComponent implements OnInit {
 
   reciveModalResultState($event: boolean){
     this.showConfirmModalWindow = $event;
+  }
+
+  reciveSearchWordMessage($event: string){
+    console.log($event)
   }
 
   showModalWindow(){

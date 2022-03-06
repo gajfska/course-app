@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 @Component({
   selector: 'app-confirm-modal-window',
   templateUrl: './confirm-modal-window.component.html',
-  styleUrls: ['./confirm-modal-window.component.css']
+  styleUrls: ['./confirm-modal-window.component.scss']
 })
 export class ConfirmModalWindowComponent implements OnInit {
 
