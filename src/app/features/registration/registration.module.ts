@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RegistrationComponent } from './registration.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { EmailValidatorDirective } from 'src/app/shared/emailValidatorDirective';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -15,7 +15,8 @@ import { EmailValidatorDirective } from 'src/app/shared/emailValidatorDirective'
     CommonModule,
     SharedModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule
   ],
   exports: [
     RegistrationComponent

@@ -12,15 +12,14 @@ export class ConfirmModalWindowComponent implements OnInit {
   @Input() okButtonText: string | undefined;
   @Input() cancelButtonText: string | undefined;
 
-  modalResultState: boolean = false;
   @Output() modalResult = new EventEmitter<boolean>()
 
   constructor() { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
-  sendModalResultState(){
-    this.modalResult.emit(this.modalResultState);
+  sendModalResultState(result: boolean) {
+    this.modalResult.emit(result);
   }
 
 }
