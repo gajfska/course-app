@@ -115,7 +115,7 @@ export class CourseEditComponent implements OnInit {
     this.authors.push(authorTemplate);
   }
 
-  removeAuthorItem(index: any): void {
+  removeAuthorItem(index: number): void {
     this.authors.removeAt(index);
   }
 

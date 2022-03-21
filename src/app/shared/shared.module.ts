@@ -11,15 +11,15 @@ import { DurationPipe } from './pipes/duration.pipe';
 import { StringJoinerPipe } from './pipes/stringJoiner.pipe';
 import { CreationDatePipe } from './pipes/creationDate.pipe';
 
-const COMPONENTS: any[] = [
+const COMPONENTS = [
   HeaderComponent,
   ButtonComponent,
   InfoComponent,
   ConfirmModalWindowComponent,
   SearchComponent,
 ];
-const VALIDATORS: any[] = [EmailValidatorDirective, AuthorValidatorDirective];
-const PIPES: any[] = [DurationPipe, CreationDatePipe, StringJoinerPipe];
+const VALIDATORS = [EmailValidatorDirective, AuthorValidatorDirective];
+const PIPES = [DurationPipe, CreationDatePipe, StringJoinerPipe];
 
 @NgModule({
   declarations: [...COMPONENTS, ...VALIDATORS, ...PIPES],

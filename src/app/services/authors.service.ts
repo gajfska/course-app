@@ -32,7 +32,7 @@ export class AuthorsService {
       .pipe(map((e) => e.result));
   }
 
-  editAuthor(author: any) {
+  editAuthor(author: Author) {
     return this.http.put('authors/{id}', author);
   }
 

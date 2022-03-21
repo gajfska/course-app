@@ -46,11 +46,11 @@ export class AuthService {
     );
   }
 
-  logout(login: any) {
-    this.http.delete('login', login);
+  logout() {
+    this.http.delete('login');
   }
 
-  register(register: any) {
+  register(register: User) {
     this.http.post('login', register);
   }
 }

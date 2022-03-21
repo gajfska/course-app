@@ -50,7 +50,7 @@ export class CoursesComponent implements OnInit {
     this.router.navigate(['courses/add']);
   }
 
-  deleteCourse(id: any) {
+  deleteCourse(id: string) {
     this.courseIdToDelete = id;
     this.showConfirmModalWindow = true;
   }
