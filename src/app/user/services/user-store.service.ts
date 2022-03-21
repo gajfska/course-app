@@ -3,12 +3,11 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { UserService } from './user.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserStoreService {
-
   private isAdmin$$ = new BehaviorSubject<boolean>(false);
-  private name$$ = new BehaviorSubject<string>("");
+  private name$$ = new BehaviorSubject<string>('');
 
   name$: Observable<string> = this.name$$.asObservable();
 
@@ -16,12 +15,12 @@ export class UserStoreService {
     return this.isAdmin$$.value;
   }
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService) {}
 
   getUser(): void {
-    this.userService.getUser().subscribe(user => {
-      this.name$$.next(user.name)
-      this.isAdmin$$.next(user.role === "admin")
-    })
+    this.userService.getUser().subscribe((user) => {
+      this.name$$.next(user.name);
+      this.isAdmin$$.next(user.role === 'admin');
+    });
   }
 }

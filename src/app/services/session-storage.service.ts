@@ -2,19 +2,17 @@ import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SessionStorageService {
-
   private window: Window;
-  private sessionStorage: Storage; 
+  private sessionStorage: Storage;
 
-  private tokenKey = "Token"
-
+  private tokenKey = 'Token';
 
   constructor(@Inject(DOCUMENT) private document: Document) {
-     this.window = this.document.defaultView!;
-     this.sessionStorage = this.window.sessionStorage;
+    this.window = this.document.defaultView!;
+    this.sessionStorage = this.window.sessionStorage;
   }
 
   setToken(token: string) {
@@ -22,10 +20,10 @@ export class SessionStorageService {
   }
 
   getToken(): string {
-    return this.sessionStorage.getItem(this.tokenKey) || "";
+    return this.sessionStorage.getItem(this.tokenKey) || '';
   }
 
-  deleteToken(){
-    this.sessionStorage.removeItem(this.tokenKey)
+  deleteToken() {
+    this.sessionStorage.removeItem(this.tokenKey);
   }
 }

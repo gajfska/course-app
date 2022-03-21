@@ -10,53 +10,55 @@ export interface ApiResponse<T> {
   errors: string[];
 }
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CoursesService {
-
   apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getAll(): Observable<Course[]> {
-    return this.http.get<ApiResponse<Course[]>>('courses/all')
-      .pipe(map(el => {
-        let courses: Course[] = el.result
-        return courses.filter(course => {
+    return this.http.get<ApiResponse<Course[]>>('courses/all').pipe(
+      map((el) => {
+        let courses: Course[] = el.result;
+        return courses.filter((course) => {
           if (course.authors.length > 0) {
-            return (typeof (course.authors[0]) === "string");
+            return typeof course.authors[0] === 'string';
           } else {
             return false;
           }
-        }
-        )
-      }
-      ))
+        });
+      })
+    );
   }
 
   createCourse(course: Course) {
-    return this.http.post('courses/add', course)
+    return this.http.post('courses/add', course);
   }
 
   editCourse(id: string, course: Course): Observable<ApiResponse<string>> {
-    return this.http.put<ApiResponse<string>>(`courses/${id}`, course)
+    return this.http.put<ApiResponse<string>>(`courses/${id}`, course);
   }
 
   getCourse(id: string): Observable<Course> {
-    return this.http.get<ApiResponse<Course>>(`courses/${id}`).pipe(map(e => e.result))
+    return this.http
+      .get<ApiResponse<Course>>(`courses/${id}`)
+      .pipe(map((e) => e.result));
   }
 
   deleteCourse(id: string): Observable<Course> {
-    return this.http.delete<ApiResponse<Course>>(`courses/${id}`).pipe(map(e => e.result))
+    return this.http
+      .delete<ApiResponse<Course>>(`courses/${id}`)
+      .pipe(map((e) => e.result));
   }
 
   filterCourses(title: string): Observable<Course[]> {
-
     let params = new HttpParams();
     params = params.append('title', title);
 
-    return this.http.get<ApiResponse<Course[]>>('courses/filter', { params: params }).pipe(map(e => e.result))
+    return this.http
+      .get<ApiResponse<Course[]>>('courses/filter', { params: params })
+      .pipe(map((e) => e.result));
   }
 }

@@ -3,10 +3,9 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Author, AuthorsService } from './authors.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthorsStoreService {
-
   private isLoading$$ = new BehaviorSubject<Boolean>(false);
   private authors$$ = new BehaviorSubject<Author[]>([]);
 
@@ -15,30 +14,32 @@ export class AuthorsStoreService {
 
   constructor(private authorsService: AuthorsService) {}
 
-   getAll() {
-    this.isLoading$$.next(true)
+  getAll() {
+    this.isLoading$$.next(true);
 
-    this.authorsService.getAll().subscribe(authors => {
-      this.authors$$.next(authors)
-      this.isLoading$$.next(false)
-    })
-   }
+    this.authorsService.getAll().subscribe((authors) => {
+      this.authors$$.next(authors);
+      this.isLoading$$.next(false);
+    });
+  }
 
-   addAuthor(author: Author): Observable<Author> {
-    this.isLoading$$.next(true)
+  addAuthor(author: Author): Observable<Author> {
+    this.isLoading$$.next(true);
 
-    return this.authorsService.addAuthor(author).pipe(tap((_ => {
-      this.isLoading$$.next(false)
-    })))
-   }
+    return this.authorsService.addAuthor(author).pipe(
+      tap((_) => {
+        this.isLoading$$.next(false);
+      })
+    );
+  }
 
-   getAuthor(id: string): Observable<Author> {
-    this.isLoading$$.next(true)
+  getAuthor(id: string): Observable<Author> {
+    this.isLoading$$.next(true);
 
-    return this.authorsService.getAuthor(id).pipe(tap((_ => {
-      this.isLoading$$.next(false)
-    })))
-   }
-
-
+    return this.authorsService.getAuthor(id).pipe(
+      tap((_) => {
+        this.isLoading$$.next(false);
+      })
+    );
+  }
 }

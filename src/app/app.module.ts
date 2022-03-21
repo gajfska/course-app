@@ -14,9 +14,7 @@ import { APIInterceptor } from './shared/baseUrl.interceptor';
 import { SharedModule } from './shared/shared.module';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     CoursesModule,
@@ -24,16 +22,16 @@ import { SharedModule } from './shared/shared.module';
     RegistrationModule,
     CourseEditModule,
     SharedModule,
-    AppRoutingModule
+    AppRoutingModule,
   ],
   providers: [
     AuthorizedGuard,
-    {      
+    {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
-      multi: true  
-    }
+      multi: true,
+    },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

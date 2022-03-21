@@ -9,18 +9,16 @@ import { Course } from './course.model';
 @Component({
   selector: 'app-course',
   templateUrl: './course.component.html',
-  styleUrls: ['./course.component.scss']
+  styleUrls: ['./course.component.scss'],
 })
 export class CourseComponent implements OnInit {
-
-
   @Input() course: Course = {
     title: '',
     description: '',
     id: '',
     creationDate: new Date(),
     duration: 0,
-    authors: []
+    authors: [],
   };
 
   paramsSubscription: Subscription | undefined;
@@ -28,38 +26,36 @@ export class CourseComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private coursesStoreService: CoursesStoreService,
-    private authorsStore: AuthorsStoreService) {
-  }
+    private authorsStore: AuthorsStoreService
+  ) {}
 
   ngOnInit(): void {
-    this.paramsSubscription = this.route.params.subscribe(params => {
-      let id = params['id']
+    this.paramsSubscription = this.route.params.subscribe((params) => {
+      let id = params['id'];
       if (!id) {
-        this.changeIdToNames()
-        return
+        this.changeIdToNames();
+        return;
       }
 
-      this.coursesStoreService.getCourse(id).subscribe(
-        data => {
-          this.course = data
-          this.changeIdToNames()
-        }
-      )
+      this.coursesStoreService.getCourse(id).subscribe((data) => {
+        this.course = data;
+        this.changeIdToNames();
+      });
     });
   }
 
   changeIdToNames() {
     let authorIds = this.course.authors;
-    let authorGetterObservables: Observable<Author>[] = []
+    let authorGetterObservables: Observable<Author>[] = [];
 
     while (authorIds.length > 0) {
-      authorGetterObservables.push(this.authorsStore.getAuthor(authorIds.pop()!))
+      authorGetterObservables.push(
+        this.authorsStore.getAuthor(authorIds.pop()!)
+      );
     }
 
-    forkJoin(authorGetterObservables).subscribe(authors =>
-      this.course.authors = authors.map(author => author.name)
-    )
-
+    forkJoin(authorGetterObservables).subscribe(
+      (authors) => (this.course.authors = authors.map((author) => author.name))
+    );
   }
-
 }

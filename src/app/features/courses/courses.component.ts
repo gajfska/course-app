@@ -7,11 +7,10 @@ import { Course } from '../course/course.model';
 @Component({
   selector: 'app-courses',
   templateUrl: './courses.component.html',
-  styleUrls: ['./courses.component.scss']
+  styleUrls: ['./courses.component.scss'],
 })
 export class CoursesComponent implements OnInit {
-
-  @Input() courses: Course[] = []
+  @Input() courses: Course[] = [];
   @Input() areCoursesEditable: boolean = false;
 
   @Output() editEvent = new EventEmitter<string>();
@@ -19,21 +18,23 @@ export class CoursesComponent implements OnInit {
   showConfirmModalWindow: boolean = false;
   courseIdToDelete?: string;
 
-  constructor(private router: Router,
+  constructor(
+    private router: Router,
     private coursesStore: CoursesStoreService,
-    public userStore: UserStoreService) {
-    this.coursesStore.courses$.subscribe(courses => this.courses = courses)
+    public userStore: UserStoreService
+  ) {
+    this.coursesStore.courses$.subscribe((courses) => (this.courses = courses));
   }
 
   ngOnInit(): void {
-    this.coursesStore.getAll()
-    this.userStore.getUser()
+    this.coursesStore.getAll();
+    this.userStore.getUser();
   }
 
   reciveModalResultState(result: boolean) {
     this.showConfirmModalWindow = false;
     if (result) {
-      this.coursesStore.deleteCourse(this.courseIdToDelete!)
+      this.coursesStore.deleteCourse(this.courseIdToDelete!);
     }
   }
 
@@ -41,17 +42,16 @@ export class CoursesComponent implements OnInit {
     if (searchTitle) {
       this.coursesStore.filterCourses(searchTitle);
     } else {
-      this.coursesStore.getAll()
+      this.coursesStore.getAll();
     }
   }
 
   onAddCourse() {
-    this.router.navigate(['courses/add'])
+    this.router.navigate(['courses/add']);
   }
 
   deleteCourse(id: any) {
     this.courseIdToDelete = id;
     this.showConfirmModalWindow = true;
   }
-
 }

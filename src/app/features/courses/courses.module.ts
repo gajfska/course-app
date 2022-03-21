@@ -7,19 +7,14 @@ import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
-  declarations: [
-    CoursesComponent,
-  ],
+  declarations: [CoursesComponent],
   imports: [
     CommonModule,
     SharedModule,
     CourseModule,
     RouterModule,
-    HttpClientModule
+    HttpClientModule,
   ],
-  exports: [
-    CoursesComponent
-  ]
+  exports: [CoursesComponent],
 })
-
-export class CoursesModule { }
+export class CoursesModule {}

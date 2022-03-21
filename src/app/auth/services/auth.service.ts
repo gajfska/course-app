@@ -14,37 +14,43 @@ export interface User {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
   private isAuthorized$$ = new BehaviorSubject<boolean>(false);
 
   get isAuthorized$(): boolean {
     return this.isAuthorized$$.value;
   }
 
-  constructor(private http: HttpClient, private sessionSorage: SessionStorageService, private router: Router) {
-    this.isAuthorized$$.next(sessionSorage.getToken() !== "")
+  constructor(
+    private http: HttpClient,
+    private sessionSorage: SessionStorageService,
+    private router: Router
+  ) {
+    this.isAuthorized$$.next(sessionSorage.getToken() !== '');
   }
 
   login(login: User) {
-    this.http.post<ApiResponse<string>>('login', login).subscribe(response => {
-      this.sessionSorage.setToken(response.result)
-      this.isAuthorized$$.next(true)
+    this.http.post<ApiResponse<string>>('login', login).subscribe(
+      (response) => {
+        this.sessionSorage.setToken(response.result);
+        this.isAuthorized$$.next(true);
 
-      this.router.navigate(['courses'])
-    }, err => {
-      let errorContent = err.error as ApiResponse<string>
-      alert(errorContent.errors.join(',"'))
-    })
+        this.router.navigate(['courses']);
+      },
+      (err) => {
+        let errorContent = err.error as ApiResponse<string>;
+        alert(errorContent.errors.join(',"'));
+      }
+    );
   }
 
   logout(login: any) {
-    this.http.delete('login', login)
+    this.http.delete('login', login);
   }
 
   register(register: any) {
-    this.http.post('login', register)
+    this.http.post('login', register);
   }
 }

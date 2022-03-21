@@ -1,14 +1,23 @@
 <div class="modal-window-style">
-    <div class="float-end">
-        <app-button iconName="times" (click)="sendModalResultState(false)"></app-button>
-    </div>
-    <div class="text-center">
-        <h3>{{title}}</h3>
-        <p>{{message}}</p>
-    </div>
-    <div class="d-flex justify-content-around">
-        <app-button [description]="okButtonText" (click)="sendModalResultState(true)"></app-button>
-        <app-button [description]="cancelButtonText" (click)="sendModalResultState(false)"></app-button>
-    </div>
+  <div class="float-end">
+    <app-button
+      iconName="times"
+      (click)="sendModalResultState(false)"
+    ></app-button>
+  </div>
+  <div class="text-center">
+    <h3>{{ title }}</h3>
+    <p>{{ message }}</p>
+  </div>
+  <div class="d-flex justify-content-around">
+    <app-button
+      [description]="okButtonText"
+      (click)="sendModalResultState(true)"
+    ></app-button>
+    <app-button
+      [description]="cancelButtonText"
+      (click)="sendModalResultState(false)"
+    ></app-button>
+  </div>
 </div>
 <div class="dark-background"></div>

@@ -5,21 +5,18 @@ import { AuthService, User } from 'src/app/auth/services/auth.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-
   user = {
-    email: "",
-    password: ""
+    email: '',
+    password: '',
   };
 
-  constructor(private authService: AuthService,) { }
-
+  constructor(private authService: AuthService) {}
 
   onSubmitFunc(form: NgForm) {
     const userDetails = form.value as User;
     this.authService.login(userDetails);
   }
-
 }

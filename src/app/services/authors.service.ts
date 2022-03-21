@@ -9,29 +9,34 @@ export interface Author {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthorsService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getAll(): Observable<Author[]> {
-    return this.http.get<ApiResponse<Author[]>>("authors/all").pipe(map(e => e.result))
+    return this.http
+      .get<ApiResponse<Author[]>>('authors/all')
+      .pipe(map((e) => e.result));
   }
 
   addAuthor(author: Author): Observable<Author> {
-    return this.http.post<ApiResponse<Author>>('authors/add', author).pipe(map(e => e.result))
+    return this.http
+      .post<ApiResponse<Author>>('authors/add', author)
+      .pipe(map((e) => e.result));
   }
 
   getAuthor(id: string): Observable<Author> {
-    return this.http.get<ApiResponse<Author>>(`authors/${id}`).pipe(map(e => e.result))
+    return this.http
+      .get<ApiResponse<Author>>(`authors/${id}`)
+      .pipe(map((e) => e.result));
   }
 
   editAuthor(author: any) {
-    return this.http.put('authors/{id}', author)
+    return this.http.put('authors/{id}', author);
   }
 
   deleteAuthor() {
-    return this.http.delete('authors/{id}')
+    return this.http.delete('authors/{id}');
   }
 }
