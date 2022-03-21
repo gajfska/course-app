@@ -1,0 +1,7 @@
+@import "../../../../styles.scss";
+
+.border-header {
+    border-radius: 0;
+    border: solid 1px $light_red;
+    margin: 10px;
+}

@@ -1,0 +1,100 @@
+<div>
+  <form [formGroup]="courseForm" #ngForm="ngForm">
+    <div>
+      <div class="d-flex align-items-center mx-3">
+        <div class="form-group w-75">
+          <label for="title"><b>Title</b></label>
+          <input 
+            formControlName="title" 
+            type="text" 
+            [ngClass]="title?.invalid && (ngForm.submitted || title?.touched) ? 'input-error-style' : 'input-basic-style'"
+            class="form-control input-basic-style" />
+
+          <small class="text-danger"
+            *ngIf="title?.invalid && (ngForm.submitted || title?.touched)">
+            Title is required
+          </small>
+        </div>
+
+        <div class="float-end">
+          <app-button description="Create course"></app-button>
+        </div>
+      </div>
+
+      <div class="form-group mx-3">
+        <label for="description"><b>Description</b></label>
+        <textarea 
+          formControlName="description" 
+          type="text" 
+          [ngClass]="description?.invalid && (ngForm.submitted || description?.touched) ? 'input-error-style' : 'input-text-area-style'"
+          class="form-control input-text-area-style" rows="10"></textarea>
+
+        <small class="text-danger"
+          *ngIf="description?.invalid && (ngForm.submitted || description?.touched)">
+          Descriptions is required
+        </small>
+      </div>
+    </div>
+
+    <div class="row mx-3 my-3 input-components-style">
+      <div class="col">
+        <h3 class="text-center">Add authors</h3>
+        <div class="d-flex flex-column form-group" formGroupName="newAuthor">
+          <label for="authorName"><b>Author name</b></label>
+          <input 
+            type="text" 
+            formControlName="authorName" 
+            class=" form-control input-basic-style"/>
+        </div>
+
+        <div class="text-center">
+          <app-button
+            (click)="addAuthorItem()"
+            description="Create author"
+            [disable]="newAuthorName?.invalid || newAuthorName?.value.length === 0">
+          </app-button>
+        </div>
+
+
+        <h3 class="text-center">Duration</h3>
+        <div class="d-flex flex-column form-group">
+          <label for="duration"><b>Duration</b></label>
+          <input
+            type="number"
+            class="form-control input-basic-style"
+            formControlName="duration"
+            [ngClass]="duration?.invalid && (ngForm.submitted || duration?.touched) ? 'input-error-style' : 'input-text-area-style'"
+          />
+
+          <small
+            class="text-danger"
+            *ngIf="duration?.invalid && (ngForm.submitted || duration?.touched)">
+            Duration is required
+          </small>
+        </div>
+        <h6>Duration: {{duration?.value| duration}} hours</h6>
+      </div>
+
+      <div class="col">
+        <h3 class="text-center">Authors list</h3>
+        <div
+          formArrayName="authors"
+          *ngFor="let item of getAuthorControls(); let i = index"
+        >
+          <div [formGroupName]="i">
+            <div class="d-flex flex-column form-group">
+              <div class="d-flex flex-row">
+                <input formControlName="authorName" />
+                <app-button
+                (click)="removeAuthorItem(i)"
+                description="Delete author"
+              >
+              </app-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

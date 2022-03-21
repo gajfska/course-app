@@ -1,15 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RegistrationComponent } from './registration.component';
+import { CourseEditComponent } from './course-edit.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { EmailValidatorDirective } from 'src/app/shared/emailValidatorDirective';
 
 
 
 @NgModule({
   declarations: [
-    RegistrationComponent,
+    CourseEditComponent
   ],
   imports: [
     CommonModule,
@@ -18,7 +17,7 @@ import { EmailValidatorDirective } from 'src/app/shared/emailValidatorDirective'
     ReactiveFormsModule
   ],
   exports: [
-    RegistrationComponent
+    CourseEditComponent
   ]
 })
-export class RegistrationModule { }
+export class CourseEditModule { }
