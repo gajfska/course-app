@@ -8,9 +8,12 @@ import { AuthService, User } from 'src/app/auth/services/auth.service';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-  user = {
+  user: User = {
     email: '',
     password: '',
+    id: '',
+    name: '',
+    role: ''
   };
 
   constructor(private authService: AuthService) {}

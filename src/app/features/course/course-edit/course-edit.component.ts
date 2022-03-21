@@ -119,7 +119,7 @@ export class CourseEditComponent implements OnInit {
     this.authors.removeAt(index);
   }
 
-  save() {
+  save(): void {
     let authorIds = this.authors.value.map((author: any) => author.id.value);
 
     const wholeCourse = { ...this.courseForm.value, authors: authorIds };

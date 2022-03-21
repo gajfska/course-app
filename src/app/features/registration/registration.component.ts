@@ -35,8 +35,4 @@ export class RegistrationComponent implements OnInit {
   get password() {
     return this.registrationForm.get('password');
   }
-
-  onSubmit() {
-    console.log(this.registrationForm);
-  }
 }
