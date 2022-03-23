@@ -11,25 +11,19 @@ import { DurationPipe } from './pipes/duration.pipe';
 import { StringJoinerPipe } from './pipes/stringJoiner.pipe';
 import { CreationDatePipe } from './pipes/creationDate.pipe';
 
-const COMPONENTS: any[] = [HeaderComponent, ButtonComponent, InfoComponent, ConfirmModalWindowComponent, SearchComponent]
-const VALIDATORS: any [] = [EmailValidatorDirective, AuthorValidatorDirective]
-const PIPES: any [] = [DurationPipe, CreationDatePipe, StringJoinerPipe]
+const COMPONENTS = [
+  HeaderComponent,
+  ButtonComponent,
+  InfoComponent,
+  ConfirmModalWindowComponent,
+  SearchComponent,
+];
+const VALIDATORS = [EmailValidatorDirective, AuthorValidatorDirective];
+const PIPES = [DurationPipe, CreationDatePipe, StringJoinerPipe];
 
 @NgModule({
-  declarations: [
-    ...COMPONENTS,
-    ...VALIDATORS,
-    ...PIPES
-  ],
-  imports: [
-    CommonModule,
-    FontAwesomeModule,
-    FormsModule
-  ],
-  exports: [
-    ...COMPONENTS,
-    ...VALIDATORS,
-    ...PIPES
-  ]
+  declarations: [...COMPONENTS, ...VALIDATORS, ...PIPES],
+  imports: [CommonModule, FontAwesomeModule, FormsModule],
+  exports: [...COMPONENTS, ...VALIDATORS, ...PIPES],
 })
 export class SharedModule {}

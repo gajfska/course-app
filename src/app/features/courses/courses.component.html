@@ -1,30 +1,51 @@
-<!-- <app-header>
-    <span>Weronika</span>
-    <app-button description="Logout"></app-button>
-</app-header> -->
+<app-search
+  placeholder="Search smth"
+  (searchWordEvent)="reciveSearchWordMessage($event)"
+></app-search>
 
-<app-search placeholder="Search smth" (searchWordEvent)="reciveSearchWordMessage($event)"></app-search>
-
-<app-button *ngIf="!showConfirmModalWindow" description="Show Modal Window" (click)="showModalWindow()"></app-button>
-
-<app-confirm-modal-window (modalResult)="reciveModalResultState($event)" *ngIf="showConfirmModalWindow"
-    title="Title Modal Window" message="Message modal window" okButtonText="Confirm" cancelButtonText="Cancel">
+<app-confirm-modal-window
+  (modalResult)="reciveModalResultState($event)"
+  *ngIf="showConfirmModalWindow"
+  title="Attention!"
+  message="Are you sure you want to delete the course?"
+  okButtonText="Confirm"
+  cancelButtonText="Cancel"
+>
 </app-confirm-modal-window>
 
 <div *ngIf="courses.length === 0">
-    <app-info title="Your list is empty" text="Please use the 'Add new course' button to add your first course">
-        <app-button description="Add new course"></app-button>
-    </app-info>
+  <app-info
+    title="Your list is empty"
+    text="Please use the 'Add new course' button to add your first course"
+  >
+    <app-button
+      description="Add new course"
+      (click)="onAddCourse()"
+    ></app-button>
+  </app-info>
 </div>
 
+<app-button description="Add new course" (click)="onAddCourse()"></app-button>
+
 <div *ngIf="courses.length !== 0">
-    <div *ngFor="let course of courses">
-        <app-course [course]="course">
-            <div>
-                <app-button description="Show Course"></app-button>
-                <app-button *ngIf="areCoursesEditable" iconName="pen" (click)="sendMessage()"></app-button>
-                <app-button iconName="trash"></app-button>
-            </div>
-        </app-course>
-    </div>
+  <div *ngFor="let course of courses">
+    <app-course [course]="course">
+      <div class="d-flex flex-row">
+        <app-button
+          description="Show Course"
+          [routerLink]="[course.id]"
+        ></app-button>
+        <app-button
+          *ngIf="userStore.isAdmin$"
+          iconName="pen"
+          [routerLink]="['edit', course.id]"
+        ></app-button>
+        <app-button
+          *ngIf="userStore.isAdmin$"
+          iconName="trash"
+          (click)="deleteCourse(course.id!)"
+        ></app-button>
+      </div>
+    </app-course>
+  </div>
 </div>

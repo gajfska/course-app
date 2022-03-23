@@ -1,39 +1,57 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
+import { CoursesStoreService } from 'src/app/services/courses-store.service';
+import { UserStoreService } from 'src/app/user/services/user-store.service';
 import { Course } from '../course/course.model';
 
 @Component({
   selector: 'app-courses',
   templateUrl: './courses.component.html',
-  styleUrls: ['./courses.component.scss']
+  styleUrls: ['./courses.component.scss'],
 })
 export class CoursesComponent implements OnInit {
-
-  @Input() courses: Course[] = []
+  @Input() courses: Course[] = [];
   @Input() areCoursesEditable: boolean = false;
 
-  editMessage: string = "This course is in edit mode!"
   @Output() editEvent = new EventEmitter<string>();
 
   showConfirmModalWindow: boolean = false;
+  courseIdToDelete?: string;
 
-  constructor() { }
-
-  ngOnInit(): void {}
-
-  sendMessage(){
-    this.editEvent.emit(this.editMessage);
+  constructor(
+    private router: Router,
+    private coursesStore: CoursesStoreService,
+    public userStore: UserStoreService
+  ) {
+    this.coursesStore.courses$.subscribe((courses) => (this.courses = courses));
   }
 
-  reciveModalResultState($event: boolean){
-    this.showConfirmModalWindow = $event;
+  ngOnInit(): void {
+    this.coursesStore.getAll();
+    this.userStore.getUser();
   }
 
-  reciveSearchWordMessage($event: string){
-    console.log($event)
+  reciveModalResultState(result: boolean) {
+    this.showConfirmModalWindow = false;
+    if (result) {
+      this.coursesStore.deleteCourse(this.courseIdToDelete!);
+    }
   }
 
-  showModalWindow(){
+  reciveSearchWordMessage(searchTitle: string) {
+    if (searchTitle) {
+      this.coursesStore.filterCourses(searchTitle);
+    } else {
+      this.coursesStore.getAll();
+    }
+  }
+
+  onAddCourse() {
+    this.router.navigate(['courses/add']);
+  }
+
+  deleteCourse(id: string) {
+    this.courseIdToDelete = id;
     this.showConfirmModalWindow = true;
   }
-
 }

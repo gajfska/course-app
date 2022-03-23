@@ -4,19 +4,17 @@ import { NgForm } from '@angular/forms';
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss']
+  styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent implements OnInit {
-
   @Input() placeholder!: string;
-  @Output() searchWordEvent =  new EventEmitter<string>();
+  @Output() searchWordEvent = new EventEmitter<string>();
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
-  onSubmitFunc(form: NgForm){
+  onSubmitFunc(form: NgForm) {
     this.searchWordEvent.emit(form.value.search);
   }
-
 }

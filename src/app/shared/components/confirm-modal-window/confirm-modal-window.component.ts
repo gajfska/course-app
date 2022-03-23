@@ -3,24 +3,21 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 @Component({
   selector: 'app-confirm-modal-window',
   templateUrl: './confirm-modal-window.component.html',
-  styleUrls: ['./confirm-modal-window.component.scss']
+  styleUrls: ['./confirm-modal-window.component.scss'],
 })
 export class ConfirmModalWindowComponent implements OnInit {
-
   @Input() title: string | undefined;
   @Input() message: string | undefined;
   @Input() okButtonText: string | undefined;
   @Input() cancelButtonText: string | undefined;
 
-  modalResultState: boolean = false;
-  @Output() modalResult = new EventEmitter<boolean>()
+  @Output() modalResult = new EventEmitter<boolean>();
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit(): void {}
 
-  sendModalResultState(){
-    this.modalResult.emit(this.modalResultState);
+  sendModalResultState(result: boolean) {
+    this.modalResult.emit(result);
   }
-
 }

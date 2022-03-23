@@ -1,2 +1,8 @@
-<fa-icon *ngIf="!!iconName" class="btn customButton" [icon]="['fas', iconName]"></fa-icon>
-<button *ngIf="!!description" class="btn customButton" [disabled]="disable">{{description}}</button>
+<fa-icon
+  *ngIf="!!iconName"
+  class="btn customButton"
+  [icon]="['fas', iconName]"
+></fa-icon>
+<button *ngIf="!!description" class="btn customButton" [disabled]="disable">
+  {{ description }}
+</button>

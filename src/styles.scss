@@ -1,48 +1,68 @@
 /* You can add global styles to this file, and also import other style files */
 
-$orange: rgba(243, 160, 86, 255);// the default color for inputs borders
+$orange: rgba(243, 160, 86, 255); // the default color for inputs borders
 
-$sand_color: rgba(249, 226, 158, 255); // the default color for textareas borders
+$sand_color: rgba(
+  249,
+  226,
+  158,
+  255
+); // the default color for textareas borders
 
 $purple: rgba(211, 179, 241, 255); // the default color for buttons borders
 
-$gray: rgba(148, 147, 147, 255); // the default color for the authors section border
+$gray: rgba(
+  148,
+  147,
+  147,
+  255
+); // the default color for the authors section border
 
-$light_blue: rgba( 164, 212, 239, 255); // the default color for the container, where form is placed
+$light_blue: rgba(
+  164,
+  212,
+  239,
+  255
+); // the default color for the container, where form is placed
 
 $white: #fff;
- 
+
 $danger: #dc3545; // color for errors: error message color and controls border
 
 $light_red: rgba(241, 145, 145, 255); // color for header border
 
-
 .input-basic-style {
-    border: 1px solid $orange;
-    border-radius: 0;
-    margin: 10px 0px;
+  border: 1px solid $orange;
+  border-radius: 0;
+  margin: 10px 0px;
 }
 
 .input-error-style {
-    border: 1px solid $danger;
-    border-radius: 0;
-    margin: 10px 0px;
+  border: 1px solid $danger;
+  border-radius: 0;
+  margin: 10px 0px;
 }
 
 .input-text-area-style {
-    border: 1px solid $sand_color;
-    border-radius: 0;
-    margin: 10px 0px;
+  border: 1px solid $sand_color;
+  border-radius: 0;
+  margin: 10px 0px;
 }
 
 .input-components-style {
-    border: 1px solid $gray;
-    border-radius: 0;
-    padding: 20px 0px;
+  border: 1px solid $gray;
+  border-radius: 0;
+  padding: 20px 0px;
 }
 
 .input-container-style {
-    border: 1px solid $light_blue;
-    border-radius: 0;
-    margin: 20px 10px;
+  border: 1px solid $light_blue;
+  border-radius: 0;
+  margin: 20px 10px;
+}
+
+.input-course-style {
+  border: 1px solid lightseagreen;
+  border-radius: 0;
+  margin: 10px 10px;
 }

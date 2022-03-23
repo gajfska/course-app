@@ -4,33 +4,53 @@
       <div class="d-flex align-items-center mx-3">
         <div class="form-group w-75">
           <label for="title"><b>Title</b></label>
-          <input 
-            formControlName="title" 
-            type="text" 
-            [ngClass]="title?.invalid && (ngForm.submitted || title?.touched) ? 'input-error-style' : 'input-basic-style'"
-            class="form-control input-basic-style" />
+          <input
+            formControlName="title"
+            type="text"
+            [ngClass]="
+              title?.invalid && (ngForm.submitted || title?.touched)
+                ? 'input-error-style'
+                : 'input-basic-style'
+            "
+            class="form-control input-basic-style"
+          />
 
-          <small class="text-danger"
-            *ngIf="title?.invalid && (ngForm.submitted || title?.touched)">
+          <small
+            class="text-danger"
+            *ngIf="title?.invalid && (ngForm.submitted || title?.touched)"
+          >
             Title is required
           </small>
         </div>
 
-        <div class="float-end">
-          <app-button description="Create course"></app-button>
+        <div class="float-end mt-4">
+          <app-button
+            description="{{ doneButtonTitle() }}"
+            (click)="save()"
+          ></app-button>
         </div>
       </div>
 
       <div class="form-group mx-3">
         <label for="description"><b>Description</b></label>
-        <textarea 
-          formControlName="description" 
-          type="text" 
-          [ngClass]="description?.invalid && (ngForm.submitted || description?.touched) ? 'input-error-style' : 'input-text-area-style'"
-          class="form-control input-text-area-style" rows="10"></textarea>
+        <textarea
+          formControlName="description"
+          type="text"
+          [ngClass]="
+            description?.invalid && (ngForm.submitted || description?.touched)
+              ? 'input-error-style'
+              : 'input-text-area-style'
+          "
+          class="form-control input-text-area-style"
+          rows="10"
+        ></textarea>
 
-        <small class="text-danger"
-          *ngIf="description?.invalid && (ngForm.submitted || description?.touched)">
+        <small
+          class="text-danger"
+          *ngIf="
+            description?.invalid && (ngForm.submitted || description?.touched)
+          "
+        >
           Descriptions is required
         </small>
       </div>
@@ -41,20 +61,23 @@
         <h3 class="text-center">Add authors</h3>
         <div class="d-flex flex-column form-group" formGroupName="newAuthor">
           <label for="authorName"><b>Author name</b></label>
-          <input 
-            type="text" 
-            formControlName="authorName" 
-            class=" form-control input-basic-style"/>
+          <input
+            type="text"
+            formControlName="name"
+            class="form-control input-basic-style"
+          />
         </div>
 
         <div class="text-center">
           <app-button
             (click)="addAuthorItem()"
             description="Create author"
-            [disable]="newAuthorName?.invalid || newAuthorName?.value.length === 0">
+            [disable]="
+              newAuthorName?.invalid || newAuthorName?.value.length === 0
+            "
+          >
           </app-button>
         </div>
-
 
         <h3 class="text-center">Duration</h3>
         <div class="d-flex flex-column form-group">
@@ -63,16 +86,21 @@
             type="number"
             class="form-control input-basic-style"
             formControlName="duration"
-            [ngClass]="duration?.invalid && (ngForm.submitted || duration?.touched) ? 'input-error-style' : 'input-text-area-style'"
+            [ngClass]="
+              duration?.invalid && (ngForm.submitted || duration?.touched)
+                ? 'input-error-style'
+                : 'input-text-area-style'
+            "
           />
 
           <small
             class="text-danger"
-            *ngIf="duration?.invalid && (ngForm.submitted || duration?.touched)">
+            *ngIf="duration?.invalid && (ngForm.submitted || duration?.touched)"
+          >
             Duration is required
           </small>
         </div>
-        <h6>Duration: {{duration?.value| duration}} hours</h6>
+        <h6>Duration: {{ duration?.value | duration }} hours</h6>
       </div>
 
       <div class="col">
@@ -84,12 +112,12 @@
           <div [formGroupName]="i">
             <div class="d-flex flex-column form-group">
               <div class="d-flex flex-row">
-                <input formControlName="authorName" />
+                <input formControlName="name" />
                 <app-button
-                (click)="removeAuthorItem(i)"
-                description="Delete author"
-              >
-              </app-button>
+                  (click)="removeAuthorItem(i)"
+                  description="Delete author"
+                >
+                </app-button>
               </div>
             </div>
           </div>

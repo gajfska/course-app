@@ -1,14 +1,14 @@
 <div class="container">
-    <form (ngSubmit)="onSubmitFunc(formSearch)" #formSearch="ngForm">
-        <div class="d-flex flex-row form-group">
-            <input 
-                type="text"  
-                class="form-control input-basic-style" 
-                name="search"
-                [placeholder]="placeholder" ngModel
-            >
-            <app-button description="Search" type="submit"></app-button>
-        </div>
-    </form>
-
+  <form (ngSubmit)="onSubmitFunc(formSearch)" #formSearch="ngForm">
+    <div class="d-flex flex-row form-group">
+      <input
+        type="text"
+        class="form-control input-basic-style"
+        name="search"
+        [placeholder]="placeholder"
+        ngModel
+      />
+      <app-button description="Search" type="submit"></app-button>
+    </div>
+  </form>
 </div>

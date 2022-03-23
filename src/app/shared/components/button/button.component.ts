@@ -5,10 +5,9 @@ import { fas, IconName } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-button',
   templateUrl: './button.component.html',
-  styleUrls: ['./button.component.scss']
+  styleUrls: ['./button.component.scss'],
 })
 export class ButtonComponent implements OnInit {
-
   constructor(library: FaIconLibrary) {
     library.addIconPacks(fas);
   }
@@ -17,7 +16,5 @@ export class ButtonComponent implements OnInit {
   @Input() iconName?: IconName;
   @Input() disable?: boolean;
 
-
   ngOnInit(): void {}
-
 }

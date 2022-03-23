@@ -1,42 +1,50 @@
 <div class="d-flex flex-column align-items-center my-3">
-    <h3>Login</h3>
-    <form (ngSubmit)="onSubmitFunc(formLogin)" #formLogin="ngForm">
-        <div class="form-group d-flex flex-column">
-            <label for="email"><b>Email</b></label>
-            <input 
-                type="email" 
-                class="form-control input-basic-style" 
-                name="email" 
-                #email="ngModel"
-                [(ngModel)]="user.email"
-                [ngClass]="email.errors?.['wrongEmail'] && (formLogin.submitted || email.touched) ? 'input-error-style' : 'input-basic-style'"
-                emailValidatorDirective 
-                required>
+  <h3>Login</h3>
+  <form (ngSubmit)="onSubmitFunc(formLogin)" #formLogin="ngForm">
+    <div class="form-group d-flex flex-column">
+      <label for="email"><b>Email</b></label>
+      <input
+        type="email"
+        class="form-control input-basic-style"
+        name="email"
+        #email="ngModel"
+        [(ngModel)]="user.email"
+        [ngClass]="email.errors?.['wrongEmail'] && (formLogin.submitted || email.touched) ? 'input-error-style' : 'input-basic-style'"
+        emailValidatorDirective
+        required
+      />
 
-            <small *ngIf="email.errors?.['wrongEmail'] && (formLogin.submitted || email.touched)" class="text-danger">
-                Sorry, wrong email.
-            </small>
+      <small
+        *ngIf="email.errors?.['wrongEmail'] && (formLogin.submitted || email.touched)"
+        class="text-danger"
+      >
+        Sorry, wrong email.
+      </small>
+    </div>
 
-        </div>
+    <div class="form-group d-flex flex-column">
+      <label for="password"><b>Password</b></label>
+      <input
+        type="password"
+        class="form-control input-basic-style"
+        name="password"
+        #password="ngModel"
+        [(ngModel)]="user.password"
+        [ngClass]="password.errors?.['required'] && (password.dirty || password.touched) ? 'input-error-style' : 'input-basic-style'"
+        required
+      />
+      <small
+        *ngIf="password.errors?.['required'] && (password.dirty || password.touched)"
+        class="text-danger"
+        >Password is required.</small
+      >
+    </div>
 
-        <div class="form-group d-flex flex-column">
-            <label for="password"><b>Password</b></label>
-            <input 
-                type="password" 
-                class="form-control input-basic-style" 
-                name="password"
-                #password="ngModel"
-                [(ngModel)]="user.password"
-                [ngClass]="password.errors?.['required'] && (password.dirty || password.touched) ? 'input-error-style' : 'input-basic-style'"
-                required>
-            <small *ngIf="password.errors?.['required'] && (password.dirty || password.touched)" class="text-danger">Password is required.</small>
-        </div>
+    <div class="text-center">
+      <app-button description="Login" type="submit"></app-button>
+    </div>
+  </form>
 
-        <div class="text-center">
-            <app-button description="Login" type="submit"></app-button>
-        </div>
-    </form>
-
-    <p>If you don't have an account you can</p>
-    <p>Registration</p>
+  <p>If you don't have an account you can</p>
+  <a routerLink="/registration" class="active">Registration</a>
 </div>
