@@ -2,7 +2,8 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { catchError, map, of, switchMap } from "rxjs";
 import { AuthorsService } from "src/app/services/authors.service";
-import { requestAuthors, requestAuthorsFail, requestAuthorsSuccess } from "./authors.actions";
+import { requestSingleCourseSuccess } from "../courses/courses.actions";
+import { requestAddAuthors, requestAddAuthorsFail, requestAddAuthorsSuccess, requestAuthors, requestAuthorsFail, requestAuthorsSuccess, requestSingleAuthor, requestSingleAuthorFail, requestSingleAuthorSuccess } from "./authors.actions";
 
 @Injectable()
 export class AuthorsEffects {
@@ -13,6 +14,18 @@ export class AuthorsEffects {
                 () => this.authorsService.getAll().pipe(
                     map(authors => requestAuthorsSuccess({ authors: authors })),
                     catchError(() => of(requestAuthorsFail()))
+                )
+            )
+        )
+    );
+
+    addAuthor$ = createEffect(
+        () => this.actions$.pipe(
+            ofType(requestAddAuthors),
+            switchMap(
+                (author) => this.authorsService.addAuthor(author).pipe(
+                    map ( author => requestAddAuthorsSuccess(author)),
+                    catchError(() => of(requestAddAuthorsFail()))
                 )
             )
         )

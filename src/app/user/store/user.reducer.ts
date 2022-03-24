@@ -13,7 +13,6 @@ const initialState: UserState = {isAdmin: false, name: ''};
 const _userReducer = createReducer(
     initialState,
     on(requestCurrentUserSuccess, (state, user) => {
-        console.log(state)
         return { 
             name: user.name,
             isAdmin: user.role === "admin" 

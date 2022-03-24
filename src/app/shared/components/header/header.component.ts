@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UserStateFacade } from 'src/app/user/store/user.facade';
 
 @Component({
   selector: 'app-header',
@@ -8,5 +9,6 @@ import { Component, OnInit } from '@angular/core';
 export class HeaderComponent implements OnInit {
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 }

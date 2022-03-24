@@ -18,14 +18,14 @@
     title="Your list is empty"
     text="Please use the 'Add new course' button to add your first course"
   >
-    <app-button
-      description="Add new course"
-      (click)="onAddCourse()"
-    ></app-button>
   </app-info>
 </div>
 
-<app-button description="Add new course" (click)="onAddCourse()"></app-button>
+<app-button 
+*ngIf="userFacade.isAdmin$ | async"
+description="Add new course"
+(click)="onAddCourse()"
+></app-button>
 
 <div *ngIf="courses.length !== 0">
   <div *ngFor="let course of courses">
@@ -36,12 +36,12 @@
           [routerLink]="[course.id]"
         ></app-button>
         <app-button
-          *ngIf="userStore.isAdmin$"
+          *ngIf="userFacade.isAdmin$ | async"
           iconName="pen"
           [routerLink]="['edit', course.id]"
         ></app-button>
         <app-button
-          *ngIf="userStore.isAdmin$"
+          *ngIf="userFacade.isAdmin$ | async"
           iconName="trash"
           (click)="deleteCourse(course.id!)"
         ></app-button>

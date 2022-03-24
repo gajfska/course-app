@@ -1,9 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { forkJoin, Observable, Subscription } from 'rxjs';
-import { AuthorsStoreService } from 'src/app/services/authors-store.service';
-import { Author } from 'src/app/services/authors.service';
-import { CoursesStoreService } from 'src/app/services/courses-store.service';
+import { cloneDeep } from 'lodash';
+import { Subscription } from 'rxjs';
+import { AuthorsStateFacade } from 'src/app/store/authors/authors.facade';
+import { CoursesStateFacade } from 'src/app/store/courses/courses.facade';
 import { Course } from './course.model';
 
 @Component({
@@ -11,7 +11,7 @@ import { Course } from './course.model';
   templateUrl: './course.component.html',
   styleUrls: ['./course.component.scss'],
 })
-export class CourseComponent implements OnInit {
+export class CourseComponent implements OnInit, OnDestroy {
   @Input() course: Course = {
     title: '',
     description: '',
@@ -22,40 +22,48 @@ export class CourseComponent implements OnInit {
   };
 
   paramsSubscription: Subscription | undefined;
+  courseSubscription: Subscription | undefined;
+  authorsSubscription: Subscription | undefined;
 
   constructor(
     private route: ActivatedRoute,
-    private coursesStoreService: CoursesStoreService,
-    private authorsStore: AuthorsStoreService
-  ) {}
+    private coursesFacade: CoursesStateFacade,
+    private authorsFacade: AuthorsStateFacade
+  ) {
+    this.courseSubscription = this.coursesFacade.course$.subscribe((data) => {
+      if(data) {
+      this.course = cloneDeep(data);
+      this.changeIdToNames();
+      }
+    });
+  }
 
   ngOnInit(): void {
+
     this.paramsSubscription = this.route.params.subscribe((params) => {
       let id = params['id'];
+
       if (!id) {
         this.changeIdToNames();
         return;
       }
 
-      this.coursesStoreService.getCourse(id).subscribe((data) => {
-        this.course = data;
-        this.changeIdToNames();
-      });
+      this.coursesFacade.getSingleCourse(id)
     });
   }
 
+  ngOnDestroy(): void {
+    this.paramsSubscription?.unsubscribe();
+    this.courseSubscription?.unsubscribe();
+    this.authorsSubscription?.unsubscribe();
+  }
+
   changeIdToNames() {
-    let authorIds = this.course.authors;
-    let authorGetterObservables: Observable<Author>[] = [];
+    this.authorsSubscription = this.authorsFacade.authors$.subscribe((authors) => {
+      let authorIds = [ ...this.course.authors ];
 
-    while (authorIds.length > 0) {
-      authorGetterObservables.push(
-        this.authorsStore.getAuthor(authorIds.pop()!)
-      );
-    }
-
-    forkJoin(authorGetterObservables).subscribe(
-      (authors) => (this.course.authors = authors.map((author) => author.name))
-    );
+      let authorsNames = authorIds.map(id => authors.find(author => author.id === id)?.name || id)
+      this.course.authors = authorsNames
+    })
   }
 }

@@ -1,31 +1,76 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { AuthorsStoreService } from 'src/app/services/authors-store.service';
+import { filter, first, Subscription } from 'rxjs';
 import { Author } from 'src/app/services/authors.service';
-import { CoursesStoreService } from 'src/app/services/courses-store.service';
 import { authorValidator } from 'src/app/shared/authorValidatorDirective';
+import { AuthorsStateFacade } from 'src/app/store/authors/authors.facade';
+import { CoursesStateFacade } from 'src/app/store/courses/courses.facade';
 
 @Component({
   selector: 'app-course-edit',
   templateUrl: './course-edit.component.html',
   styleUrls: ['./course-edit.component.scss'],
 })
-export class CourseEditComponent implements OnInit {
+export class CourseEditComponent implements OnInit, OnDestroy {
   courseForm!: FormGroup;
   paramsSubscription: Subscription | undefined;
+  courseSubscription: Subscription | undefined;
+  authorsSubscription: Subscription | undefined;
 
   courseId?: string;
   authorIds: string[] = [];
 
   constructor(
-    private authorsStore: AuthorsStoreService,
-    private courseStore: CoursesStoreService,
     private route: ActivatedRoute,
-    private router: Router,
-    private coursesStoreService: CoursesStoreService
-  ) {}
+    private coursesFacade: CoursesStateFacade,
+    private authorsFacade: AuthorsStateFacade
+  ) {
+    let curseTitle = '';
+
+    this.courseForm = new FormGroup({
+      title: new FormControl(curseTitle, [
+        Validators.required,
+        Validators.minLength(6),
+      ]),
+      description: new FormControl('', [Validators.required]),
+      duration: new FormControl('', [Validators.required, Validators.min(1)]),
+      newAuthor: new FormGroup({
+        name: new FormControl('', [authorValidator()]),
+      }),
+      authors: new FormArray([]),
+    });
+
+    this.authorsFacade.addedAuthor$.subscribe((author) => {
+      if (author) {
+        this.addAuthor(author);
+      }
+    });
+
+    this.courseSubscription = this.coursesFacade.course$.pipe(filter(v => !!v)).subscribe((data) => {
+      if (!data) {
+        return;
+      }
+
+      this.courseId = data.id;
+
+      this.title?.setValue(data.title);
+      this.description?.setValue(data.description);
+      this.duration?.setValue(data.duration);
+
+      this.authorIds = data.authors;
+
+    this.authors.controls = []
+
+      this.authorsSubscription = this.authorsFacade.authors$.pipe(first()).subscribe((authors) => {
+        this.authorIds.forEach((authorId) => {
+          const authorName = authors.find((author) => author.id === authorId)?.name || authorId;
+          this.addAuthor({ name: authorName, id: authorId });
+        });
+      });
+    });
+
+  }
 
   get title() {
     return this.courseForm.get('title');
@@ -52,58 +97,31 @@ export class CourseEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let curseTitle = '';
-
-    this.courseForm = new FormGroup({
-      title: new FormControl(curseTitle, [
-        Validators.required,
-        Validators.minLength(6),
-      ]),
-      description: new FormControl('', [Validators.required]),
-      duration: new FormControl('', [Validators.required, Validators.min(1)]),
-      newAuthor: new FormGroup({
-        name: new FormControl('', [authorValidator()]),
-      }),
-      authors: new FormArray([]),
-    });
-
     this.paramsSubscription = this.route.params.subscribe((params) => {
       let id = params['id'];
+
       if (!id) {
         return;
       }
-      this.coursesStoreService.getCourse(id).subscribe((data) => {
-        this.courseId = data.id;
 
-        this.title?.setValue(data.title);
-        this.description?.setValue(data.description);
-        this.duration?.setValue(data.duration);
-
-        this.authorIds = data.authors;
-
-        for (let authorId of data.authors) {
-          this.fetchAndSetAuthorItem(authorId);
-        }
-      });
+      this.coursesFacade.getSingleCourse(id);
     });
+  }
+
+  ngOnDestroy(): void {
+    this.paramsSubscription?.unsubscribe();
+    this.courseSubscription?.unsubscribe();
+    this.authorsSubscription?.unsubscribe();
   }
 
   getAuthorControls() {
     return (this.courseForm.get('authors') as FormArray).controls;
   }
 
-  private fetchAndSetAuthorItem(id: string): void {
-    this.authorsStore
-      .getAuthor(id)
-      .subscribe((author) => this.addAuthor(author));
-  }
-
   addAuthorItem(): void {
     let newAuthorName: string = this.newAuthorName?.value;
 
-    this.authorsStore.addAuthor({ name: newAuthorName }).subscribe((author) => {
-      this.addAuthor(author);
-    });
+    this.authorsFacade.addAuthor({ name: newAuthorName });
   }
 
   private addAuthor(author: Author): void {
@@ -125,11 +143,10 @@ export class CourseEditComponent implements OnInit {
     const wholeCourse = { ...this.courseForm.value, authors: authorIds };
 
     if (this.courseId) {
-      this.coursesStoreService.editCourse(this.courseId, wholeCourse);
+      this.coursesFacade.editCourse(wholeCourse, this.courseId);
     } else {
-      this.courseStore.createCourse(wholeCourse);
+      this.coursesFacade.createCourse(wholeCourse);
     }
-    this.router.navigate(['curses']);
   }
 
   doneButtonTitle(): string {

@@ -17,40 +17,17 @@ export interface User {
   providedIn: 'root',
 })
 export class AuthService {
-  private isAuthorized$$ = new BehaviorSubject<boolean>(false);
+  constructor(private http: HttpClient) {}
 
-  get isAuthorized$(): boolean {
-    return this.isAuthorized$$.value;
+  login(login: User): Observable<ApiResponse<string>> {
+    return this.http.post<ApiResponse<string>>('login', login);
   }
 
-  constructor(
-    private http: HttpClient,
-    private sessionSorage: SessionStorageService,
-    private router: Router
-  ) {
-    this.isAuthorized$$.next(sessionSorage.getToken() !== '');
+  logout(): Observable<ApiResponse<string>> {
+    return this.http.delete<ApiResponse<string>>('login');
   }
 
-  login(login: User) {
-    this.http.post<ApiResponse<string>>('login', login).subscribe(
-      (response) => {
-        this.sessionSorage.setToken(response.result);
-        this.isAuthorized$$.next(true);
-
-        this.router.navigate(['courses']);
-      },
-      (err) => {
-        let errorContent = err.error as ApiResponse<string>;
-        alert(errorContent.errors.join(',"'));
-      }
-    );
-  }
-
-  logout() {
-    this.http.delete('login');
-  }
-
-  register(register: User) {
-    this.http.post('login', register);
+  register(register: User): Observable<ApiResponse<string>> {
+    return this.http.post<ApiResponse<string>>('login', register);
   }
 }

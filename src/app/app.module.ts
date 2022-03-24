@@ -13,7 +13,6 @@ import { CourseEditModule } from './features/course/course-edit/course-edit.modu
 import { CoursesModule } from './features/courses/courses.module';
 import { LoginModule } from './features/login/login.module';
 import { RegistrationModule } from './features/registration/registration.module';
-import { APIInterceptor } from './shared/baseUrl.interceptor';
 import { SharedModule } from './shared/shared.module';
 import { effects, reducers } from './store';
 

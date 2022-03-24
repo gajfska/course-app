@@ -1,15 +1,26 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { Router } from '@angular/router';
-import { CoursesStoreService } from 'src/app/services/courses-store.service';
-import { UserStoreService } from 'src/app/user/services/user-store.service';
+import { AuthStateFacade } from 'src/app/auth/store/auth.facade';
+import { CoursesStateFacade } from 'src/app/store/courses/courses.facade';
 import { Course } from '../course/course.model';
+import { cloneDeep } from 'lodash';
+import { UserStateFacade } from 'src/app/user/store/user.facade';
+import { AuthorsStateFacade } from 'src/app/store/authors/authors.facade';
+import { combineLatest, of, Subscription, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-courses',
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.scss'],
 })
-export class CoursesComponent implements OnInit {
+export class CoursesComponent implements OnInit, OnDestroy {
   @Input() courses: Course[] = [];
   @Input() areCoursesEditable: boolean = false;
 
@@ -18,31 +29,49 @@ export class CoursesComponent implements OnInit {
   showConfirmModalWindow: boolean = false;
   courseIdToDelete?: string;
 
+  courseSubscription: Subscription | undefined;
+  authorsSubscription: Subscription | undefined;
+
   constructor(
     private router: Router,
-    private coursesStore: CoursesStoreService,
-    public userStore: UserStoreService
+    private coursesFacade: CoursesStateFacade,
+    public authFacade: AuthStateFacade,
+    public userFacade: UserStateFacade,
+    public authorsFacade: AuthorsStateFacade
   ) {
-    this.coursesStore.courses$.subscribe((courses) => (this.courses = courses));
+    combineLatest([
+      this.coursesFacade.allCourses$,
+      this.coursesFacade.courses$,
+      this.coursesFacade.isSearchState$,
+    ]).subscribe(
+      ([allCourses, filteredCourses, isSearching]) =>
+        (this.courses = isSearching
+          ? cloneDeep(filteredCourses)
+          : cloneDeep(allCourses))
+    );
   }
 
   ngOnInit(): void {
-    this.coursesStore.getAll();
-    this.userStore.getUser();
+    this.coursesFacade.getAllCourses();
+    this.authorsFacade.getAuthors();
+  }
+
+  ngOnDestroy(): void {
+    this.courseSubscription?.unsubscribe();
   }
 
   reciveModalResultState(result: boolean) {
     this.showConfirmModalWindow = false;
     if (result) {
-      this.coursesStore.deleteCourse(this.courseIdToDelete!);
+      this.coursesFacade.deleteCourse(this.courseIdToDelete!);
     }
   }
 
   reciveSearchWordMessage(searchTitle: string) {
     if (searchTitle) {
-      this.coursesStore.filterCourses(searchTitle);
+      this.coursesFacade.getFilteredCourses(searchTitle);
     } else {
-      this.coursesStore.getAll();
+      this.coursesFacade.getAllCourses();
     }
   }
 
