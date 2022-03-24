@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { CanLoad, Route, Router, UrlSegment, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
-import { AuthService } from '../services/auth.service';
+import { first, map, Observable } from 'rxjs';
+import { AuthStateFacade } from '../store/auth.facade';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthorizedGuard implements CanLoad {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authFacade: AuthStateFacade, private router: Router) {}
 
   canLoad(
     route: Route,
@@ -17,10 +17,15 @@ export class AuthorizedGuard implements CanLoad {
     | UrlTree
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree> {
-    if (this.authService.isAuthorized$) {
-      return true;
-    } else {
-      return this.router.parseUrl('/login');
-    }
+    return this.authFacade.isAuthorized$.pipe(
+      first(),
+      map((value) => {
+        if (value) {
+          return true;
+        } else {
+          return this.router.parseUrl('/login');
+        }
+      })
+    );
   }
 }

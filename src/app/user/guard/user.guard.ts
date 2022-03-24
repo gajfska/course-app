@@ -6,14 +6,14 @@ import {
   RouterStateSnapshot,
   UrlTree,
 } from '@angular/router';
-import { Observable } from 'rxjs';
-import { UserStoreService } from '../services/user-store.service';
+import { first, map, Observable } from 'rxjs';
+import { UserStateFacade } from '../store/user.facade';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserGuard implements CanActivate {
-  constructor(private userStore: UserStoreService, private router: Router) {}
+  constructor(private userFacade: UserStateFacade, private router: Router) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -23,10 +23,15 @@ export class UserGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    if (this.userStore.isAdmin$) {
-      return true;
-    } else {
-      return this.router.parseUrl('/courses');
-    }
+      return this.userFacade.isAdmin$.pipe(
+        first(),
+        map(isAdmin => {
+          if(isAdmin) {
+            return true
+          } else {
+            return this.router.parseUrl('/courses');
+          }
+        })
+      )
   }
 }
